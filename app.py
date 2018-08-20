@@ -134,7 +134,7 @@ def data():
     # collection.drop()
 
     real_estate_data = pd.read_csv("input_data/real_estate.csv")
-    real_estate_data.fillna(value="N/A", inplace=True)
+    real_estate_data.fillna(value=0, inplace=True)
     real_estate_data = real_estate_data.rename(index=str, columns={"SALE TYPE": "sale_type",
                                                                     "SOLD DATE": "sold_date", 
                                                                     "URL (SEE http://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)": "url",
@@ -162,6 +162,32 @@ def data():
                                                                     "INTERESTED": "interested",
                                                                     "LATITUDE": "lat",
                                                                     "LONGITUDE": "lon"})
+
+
+
+    cols = real_estate_data.columns
+    my_dict = dict()
+
+    for i in cols:
+        if f"{i}" not in my_dict.keys():
+            my_dict[f"{i}"] = []
+            
+        try:
+            if type(real_estate_data[i].max()) != str and type(real_estate_data[i].min()) != str:
+
+                my_dict[f"{i}"].append(real_estate_data[i].min())
+                my_dict[f"{i}"].append(real_estate_data[i].max())
+            else: 
+
+                my_dict[f"{i}"].append(0)
+                my_dict[f"{i}"].append(0)
+        except:
+            my_dict[f"{i}"].append(0)
+            my_dict[f"{i}"].append(0)
+            
+    min_max = pd.DataFrame(my_dict).fillna(0)
+
+    real_estate_data = pd.concat([min_max, real_estate_data], ignore_index=True)
 
     real_estate_data = real_estate_data.to_dict(orient="records")
 

@@ -1,3 +1,6 @@
+var minVal = [];
+var maxVal = [];
+
 
 // Justin 1 of 2 
 var propTypeChart = dc.rowChart("#propType");
@@ -24,6 +27,18 @@ function createList (jsonUrl) {
     if (error) return console.warn(error);
 
     console.log(response);
+
+    minVal.push(response[0]);
+    maxVal.push(response[1]);
+
+    minVal = minVal[0];
+    maxVal = maxVal[0];
+
+    console.log(minVal.beds);
+    console.log(maxVal);
+
+
+    response = response.slice(2);
 
     d3.select(".list-group").selectAll("li").remove()
 
