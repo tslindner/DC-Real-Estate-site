@@ -20,15 +20,16 @@ class Param{
         this.toDoubleId = toDoubleId;
         document.getElementById(this.toSingleId).addEventListener("click", this.toSingleEvent.bind(this));
         document.getElementById(this.toDoubleId).addEventListener("click", this.toDoubleEvent.bind(this));
-
     };
 
     toSingleEvent(){
         console.log(this.toSingleId);
         document.getElementById(this.toSingleId).style.display = "none";
         document.getElementById(this.toDoubleId).style.display = "inline-block";
+        console.log(this.slider.noUiSlider);
         this.slider.noUiSlider.destroy();
         createSingleFilter(this.slider, minVal[this.name], minVal[this.name], maxVal[this.name]);
+        // this.slider.noUiSlider.on('change', applyFilters());
     };
         
     toDoubleEvent(){
@@ -36,7 +37,10 @@ class Param{
       document.getElementById(this.toDoubleId).style.display = "none";
       this.slider.noUiSlider.destroy();
       createDoubleFilter(this.slider, minVal[this.name], maxVal[this.name], minVal[this.name], maxVal[this.name]);
+      this.slider.noUiSlider.on('change', applyFilters());
     };
+
+    
 }
 
 
@@ -592,6 +596,16 @@ function inputConnection(Param) {
       Param.slider.noUiSlider.set([null, Math.round(this.value)]);
     });
   };
+
+
+
+// bedSlider.noUiSlider.on('change', applyFilters());
+// bathSlider.noUiSlider.on('change', applyFilters());
+// priceSlider.noUiSlider.on('change', applyFilters());
+// sqftSlider.noUiSlider.on('change', applyFilters());
+// yearSlider.noUiSlider.on('change', applyFilters());
+// moneySqftSlider.noUiSlider.on('change', applyFilters());
+// hoaSlider.noUiSlider.on('change', applyFilters());
 
 
 function initMap() {
