@@ -1,5 +1,35 @@
+
+var bedSlider = document.getElementById("bedSlider");
+var bathSlider = document.getElementById("bathSlider");
+var priceSlider = document.getElementById("priceSlider");
+var sqftSlider = document.getElementById("sqftSlider");
+var yearSlider = document.getElementById("yearSlider");
+var moneySqftSlider = document.getElementById("moneySqftSlider");
+var hoaSlider = document.getElementById("hoaSlider");
+
+
+class Param{
+    constructor(slider, lowInputId, highInputId) {
+        this.slider = slider;
+        this.lowInputId = lowInputId;
+        this.highInputId = highInputId;
+    };
+}
+
+const bedParam = new Param(bedSlider, 'bedLowInput', 'bedHighInput');
+const bathParam = new Param(bathSlider, 'bathLowInput', 'bathHighInput');
+const priceParam = new Param(priceSlider, 'priceLowInput', 'priceHighInput');
+const sqftParam = new Param(sqftSlider, 'sqftLowInput', 'sqftHighInput');
+const yearParam = new Param(yearSlider, 'yearLowInput', 'yearHighInput');
+const moneySqFtParam = new Param(moneySqftSlider, 'moneySqftLowInput', 'moneySqftHighInput');
+const hoaParam = new Param(hoaSlider, 'hoaLowInput', 'hoaHighInput');
+
+
+var firstLoad = true;
+
 var minVal = [];
 var maxVal = [];
+
 
 
 // Justin 1 of 2 
@@ -22,21 +52,49 @@ L.tileLayer(
 
 function createList (jsonUrl) {
 
+    // var minVal = [];
+    // var maxVal = [];    
+
   d3.json(`${jsonUrl}`, function(error, response) {
 
     if (error) return console.warn(error);
 
     console.log(response);
 
-    minVal.push(response[0]);
-    maxVal.push(response[1]);
+    if (firstLoad == true) {
 
-    minVal = minVal[0];
-    maxVal = maxVal[0];
+        minVal.push(response[0]);
+        maxVal.push(response[1]);
 
-    console.log(minVal.beds);
-    console.log(maxVal);
+        minVal = minVal[0];
+        maxVal = maxVal[0];
 
+        initFilters(bedSlider, minVal.beds, maxVal.beds, minVal.beds, maxVal.beds);    
+        initFilters(bathSlider, minVal.baths, maxVal.baths, minVal.baths, maxVal.baths);
+        initFilters(priceSlider, minVal.price, maxVal.price, minVal.price, maxVal.price);
+        initFilters(sqftSlider, minVal.sq_ft, maxVal.sq_ft, minVal.sq_ft, maxVal.sq_ft);
+        initFilters(yearSlider, minVal.year_built, maxVal.year_built, minVal.year_built, maxVal.year_built);
+        initFilters(moneySqftSlider, minVal.money_per_sq_ft, maxVal.money_per_sq_ft, minVal.money_per_sq_ft, maxVal.money_per_sq_ft);
+        initFilters(hoaSlider, minVal.hoa_per_month, maxVal.hoa_per_month, minVal.hoa_per_month, maxVal.hoa_per_month);
+    };
+
+    firstLoad = false;
+
+    // bedInputConnection();
+    // bathInputConnection();
+    // priceInputConnection();
+    // sqftInputConnection();
+    // yearInputConnection();
+    // moneySqftInputConnection();
+    // hoaInputConnection();
+
+    inputConnection(bedParam);
+    inputConnection(bathParam);
+    inputConnection(priceParam);
+    inputConnection(sqftParam);
+    inputConnection(yearParam);
+    inputConnection(moneySqFtParam);
+    inputConnection(hoaParam);
 
     response = response.slice(2);
 
@@ -238,33 +296,19 @@ function getData(filterURLData) {
 
     var filterURL = "/search?";
   
-    if (bedSliderBool == true) {
       filterURL = filterURL + `high_beds=${filterURLData.bed[1]}&low_beds=${filterURLData.bed[0]}`
-    };
 
-    if (bathSliderBool == true) {
       filterURL = filterURL + `&high_baths=${filterURLData.bath[1]}&low_baths=${filterURLData.bath[0]}`
-    };
 
-    if (priceSliderBool == true) {
       filterURL = filterURL + `&high_price=${filterURLData.price[1]}&low_price=${filterURLData.price[0]}`
-    };
 
-    if (sqftSliderBool == true) {
       filterURL = filterURL + `&high_sqft=${filterURLData.sqft[1]}&low_sqft=${filterURLData.sqft[0]}`
-    };
 
-    if (yearSliderBool == true) {
       filterURL = filterURL + `&high_year=${filterURLData.year[1]}&low_year=${filterURLData.year[0]}`
-    };
   
-    if (moneySqftSliderBool == true) {
       filterURL = filterURL + `&high_moneySqft=${filterURLData.moneySqft[1]}&low_moneySqft=${filterURLData.moneySqft[0]}`
-    };
 
-    if (hoaSliderBool == true) {
-      filterURL = filterURL + `&high_hoa=${filterURLData.hoa[1]}&low_hoa=${filterURLData.hoa[0]}\`)}`
-    };
+      filterURL = filterURL + `&high_hoa=${filterURLData.hoa[1]}&low_hoa=${filterURLData.hoa[0]}\ `
 
     console.log(filterURL)
 
@@ -421,121 +465,121 @@ function closeGraphNav() {
 }
 
 
-var bedSliderBool = false;
-var bathSliderBool = false;
-var priceSliderBool = false;
-var sqftSliderBool = false;
-var yearSliderBool = false;
-var moneySqftSliderBool = false;
-var hoaSliderBool = false;
+// var bedSliderBool = false;
+// var bathSliderBool = false;
+// var priceSliderBool = false;
+// var sqftSliderBool = false;
+// var yearSliderBool = false;
+// var moneySqftSliderBool = false;
+// var hoaSliderBool = false;
 
 
-function activateBed() {
-  document.getElementById("activateBedSlider").style.display = "none";
-  document.getElementById("deactivateBedSlider").style.display = "block";
-  bedSlider.removeAttribute("disabled");
-  bedSliderBool = true;
-};
+// function activateBed() {
+//   document.getElementById("activateBedSlider").style.display = "none";
+//   document.getElementById("deactivateBedSlider").style.display = "block";
+//   bedSlider.removeAttribute("disabled");
+//   bedSliderBool = true;
+// };
 
-function deactivateBed() {
-  document.getElementById("activateBedSlider").style.display = "block";
-  document.getElementById("deactivateBedSlider").style.display = "none";
-  bedSlider.setAttribute("disabled", true);
-  bedSliderBool = false;
-};
+// function deactivateBed() {
+//   document.getElementById("activateBedSlider").style.display = "block";
+//   document.getElementById("deactivateBedSlider").style.display = "none";
+//   bedSlider.setAttribute("disabled", true);
+//   bedSliderBool = false;
+// };
 
-function activateBath() {
-  document.getElementById("activateBathSlider").style.display = "none";
-  document.getElementById("deactivateBathSlider").style.display = "block";
-  bathSlider.removeAttribute("disabled");
-  bathSliderBool = true;
-};
+// function activateBath() {
+//   document.getElementById("activateBathSlider").style.display = "none";
+//   document.getElementById("deactivateBathSlider").style.display = "block";
+//   bathSlider.removeAttribute("disabled");
+//   bathSliderBool = true;
+// };
 
-function deactivateBath() {
-  document.getElementById("activateBathSlider").style.display = "block";
-  document.getElementById("deactivateBathSlider").style.display = "none";
-  bathSlider.setAttribute("disabled", true);
-  bathSliderBool = false;
-};
+// function deactivateBath() {
+//   document.getElementById("activateBathSlider").style.display = "block";
+//   document.getElementById("deactivateBathSlider").style.display = "none";
+//   bathSlider.setAttribute("disabled", true);
+//   bathSliderBool = false;
+// };
 
-function activatePrice() {
-  document.getElementById("activatePriceSlider").style.display = "none";
-  document.getElementById("deactivatePriceSlider").style.display = "block";
-  priceSlider.removeAttribute("disabled");
-  priceSliderBool = true;
-};
+// function activatePrice() {
+//   document.getElementById("activatePriceSlider").style.display = "none";
+//   document.getElementById("deactivatePriceSlider").style.display = "block";
+//   priceSlider.removeAttribute("disabled");
+//   priceSliderBool = true;
+// };
 
-function deactivatePrice() {
-  document.getElementById("activatePriceSlider").style.display = "block";
-  document.getElementById("deactivatePriceSlider").style.display = "none";
-  priceSlider.setAttribute("disabled", true);
-  priceSliderBool = false;
-};
+// function deactivatePrice() {
+//   document.getElementById("activatePriceSlider").style.display = "block";
+//   document.getElementById("deactivatePriceSlider").style.display = "none";
+//   priceSlider.setAttribute("disabled", true);
+//   priceSliderBool = false;
+// };
 
-function activateSqft() {
-  document.getElementById("activateSqftSlider").style.display = "none";
-  document.getElementById("deactivateSqftSlider").style.display = "block";
-  sqftSlider.removeAttribute("disabled");
-  sqftSliderBool = true;
-};
+// function activateSqft() {
+//   document.getElementById("activateSqftSlider").style.display = "none";
+//   document.getElementById("deactivateSqftSlider").style.display = "block";
+//   sqftSlider.removeAttribute("disabled");
+//   sqftSliderBool = true;
+// };
 
-function deactivateSqft() {
-  document.getElementById("activateSqftSlider").style.display = "block";
-  document.getElementById("deactivateSqftSlider").style.display = "none";
-  sqftSlider.setAttribute("disabled", true);
-  sqftSliderBool = false;
-};
+// function deactivateSqft() {
+//   document.getElementById("activateSqftSlider").style.display = "block";
+//   document.getElementById("deactivateSqftSlider").style.display = "none";
+//   sqftSlider.setAttribute("disabled", true);
+//   sqftSliderBool = false;
+// };
 
-function activateYear() {
-  document.getElementById("activateYearSlider").style.display = "none";
-  document.getElementById("deactivateYearSlider").style.display = "block";
-  yearSlider.removeAttribute("disabled");
-  yearSliderBool = true;
-};
+// function activateYear() {
+//   document.getElementById("activateYearSlider").style.display = "none";
+//   document.getElementById("deactivateYearSlider").style.display = "block";
+//   yearSlider.removeAttribute("disabled");
+//   yearSliderBool = true;
+// };
 
-function deactivateYear() {
-  document.getElementById("activateYearSlider").style.display = "block";
-  document.getElementById("deactivateYearSlider").style.display = "none";
-  yearSlider.setAttribute("disabled", true);
-  yearSliderBool = false;
-};
+// function deactivateYear() {
+//   document.getElementById("activateYearSlider").style.display = "block";
+//   document.getElementById("deactivateYearSlider").style.display = "none";
+//   yearSlider.setAttribute("disabled", true);
+//   yearSliderBool = false;
+// };
 
-function activateMoneySqft() {
-  document.getElementById("activateMoneySqftSlider").style.display = "none";
-  document.getElementById("deactivateMoneySqftSlider").style.display = "block";
-  moneySqftSlider.removeAttribute("disabled");
-  moneySqftSliderBool = true;
-};
+// function activateMoneySqft() {
+//   document.getElementById("activateMoneySqftSlider").style.display = "none";
+//   document.getElementById("deactivateMoneySqftSlider").style.display = "block";
+//   moneySqftSlider.removeAttribute("disabled");
+//   moneySqftSliderBool = true;
+// };
 
-function deactivateMoneySqft() {
-  document.getElementById("activateMoneySqftSlider").style.display = "block";
-  document.getElementById("deactivateMoneySqftSlider").style.display = "none";
-  moneySqftSlider.setAttribute("disabled", true);
-  moneySqftBool = false;
-};
+// function deactivateMoneySqft() {
+//   document.getElementById("activateMoneySqftSlider").style.display = "block";
+//   document.getElementById("deactivateMoneySqftSlider").style.display = "none";
+//   moneySqftSlider.setAttribute("disabled", true);
+//   moneySqftBool = false;
+// };
 
-function activateHoa() {
-  document.getElementById("activateHoaSlider").style.display = "none";
-  document.getElementById("deactivateHoaSlider").style.display = "block";
-  hoaSlider.removeAttribute("disabled");
-  hoaSliderbool = true;
-};
+// function activateHoa() {
+//   document.getElementById("activateHoaSlider").style.display = "none";
+//   document.getElementById("deactivateHoaSlider").style.display = "block";
+//   hoaSlider.removeAttribute("disabled");
+//   hoaSliderbool = true;
+// };
 
-function deactivateHoa() {
-  document.getElementById("activateHoaSlider").style.display = "block";
-  document.getElementById("deactivateHoaSlider").style.display = "none";
-  hoaSlider.setAttribute("disabled", true);
-  hoaSliderBool = false;
-};
+// function deactivateHoa() {
+//   document.getElementById("activateHoaSlider").style.display = "block";
+//   document.getElementById("deactivateHoaSlider").style.display = "none";
+//   hoaSlider.setAttribute("disabled", true);
+//   hoaSliderBool = false;
+// };
 
 
-var bedSlider = document.getElementById("bedSlider");
-var bathSlider = document.getElementById("bathSlider");
-var priceSlider = document.getElementById("priceSlider");
-var sqftSlider = document.getElementById("sqftSlider");
-var yearSlider = document.getElementById("yearSlider");
-var moneySqftSlider = document.getElementById("moneySqftSlider");
-var hoaSlider = document.getElementById("hoaSlider");
+// var bedSlider = document.getElementById("bedSlider");
+// var bathSlider = document.getElementById("bathSlider");
+// var priceSlider = document.getElementById("priceSlider");
+// var sqftSlider = document.getElementById("sqftSlider");
+// var yearSlider = document.getElementById("yearSlider");
+// var moneySqftSlider = document.getElementById("moneySqftSlider");
+// var hoaSlider = document.getElementById("hoaSlider");
 
 
 // initFilters(bedSlider,0, 10, -99999999999999999, 99999999999999999)
@@ -546,21 +590,29 @@ var hoaSlider = document.getElementById("hoaSlider");
 // initFilters(moneySqftSlider, 0, 1000, -99999999999999999, 99999999999999999)
 // initFilters(hoaSlider, 0, 1000, -99999999999999999, 99999999999999999)
 
-initFilters(bedSlider,0, 10, 0, 10)
-initFilters(bathSlider, 0, 10, 0, 10)
-initFilters(priceSlider, 0, 10000000, 0, 10000000)
-initFilters(sqftSlider, 0, 3000, 0, 3000)
-initFilters(yearSlider, 1900, 2018, 1900, 2018)
-initFilters(moneySqftSlider, 0, 1000, 0, 1000)
-initFilters(hoaSlider, 0, 1000, 0, 1000)
+// initFilters(bedSlider,0, 10, 0, 10)
+// initFilters(bathSlider, 0, 10, 0, 10)
+// initFilters(priceSlider, 0, 10000000, 0, 10000000)
+// initFilters(sqftSlider, 0, 3000, 0, 3000)
+// initFilters(yearSlider, 1900, 2018, 1900, 2018)
+// initFilters(moneySqftSlider, 0, 1000, 0, 1000)
+// initFilters(hoaSlider, 0, 1000, 0, 1000)
 
-deactivateBed()
-deactivateBath()
-deactivatePrice()
-deactivateSqft()
-deactivateYear()
-deactivateMoneySqft()
-deactivateHoa()
+// initFilters(bedSlider,minVal.beds, maxVal.beds, minVal.beds, maxVal.beds)
+// initFilters(bathSlider, minVal.baths, maxVal.baths, minVal.baths, maxVal.baths)
+// initFilters(priceSlider, minVal.price, maxVal.price, minVal.price, maxVal.price)
+// initFilters(sqftSlider, minVal.sq_ft, maxVal.sq_ft, minVal.sq_ft, maxVal.sq_ft)
+// initFilters(yearSlider, minVal.year, maxVal.year, minVal.year, maxVal.year)
+// initFilters(moneySqftSlider, minVal.money_per_sq_ft, maxVal.money_per_sq_ft, minVal.money_per_sq_ft, maxVal.money_per_sq_ft)
+// initFilters(hoaSlider, minVal.hoa_per_month, maxVal.hoa_per_month, minVal.hoa_per_month, maxVal.hoa_per_month)
+
+// deactivateBed()
+// deactivateBath()
+// deactivatePrice()
+// deactivateSqft()
+// deactivateYear()
+// deactivateMoneySqft()
+// deactivateHoa()
 
 
 function initFilters(fieldSlider, low, high, min, max) {
@@ -593,13 +645,21 @@ function createDoubleFilter(fieldSlider, low, high, min, max) {
       'max': max
     }
   });
-  bedInputConnection()
-  bathInputConnection()
-  priceInputConnection()
-  sqftInputConnection()
-  yearInputConnection()
-  moneySqftInputConnection()
-  hoaInputConnection()
+//   bedInputConnection()
+//   bathInputConnection()
+//   priceInputConnection()
+//   sqftInputConnection()
+//   yearInputConnection()
+//   moneySqftInputConnection()
+//   hoaInputConnection()
+
+  inputConnection(bedParam);
+  inputConnection(bathParam);
+  inputConnection(priceParam);
+  inputConnection(sqftParam);
+  inputConnection(yearParam);
+  inputConnection(moneySqFtParam);
+  inputConnection(hoaParam);
 };
 
 function createSingleFilter(fieldSlider, start, min, max) {
@@ -615,24 +675,34 @@ function createSingleFilter(fieldSlider, start, min, max) {
       'max': max
     }
   });
-  bedInputConnection()
-  bathInputConnection()
-  priceInputConnection()
-  sqftInputConnection()
-  yearInputConnection()
-  moneySqftInputConnection()
-  hoaInputConnection()
+//   bedInputConnection()
+//   bathInputConnection()
+//   priceInputConnection()
+//   sqftInputConnection()
+//   yearInputConnection()
+//   moneySqftInputConnection()
+//   hoaInputConnection()
+
+  inputConnection(bedParam);
+  inputConnection(bathParam);
+  inputConnection(priceParam);
+  inputConnection(sqftParam);
+  inputConnection(yearParam);
+  inputConnection(moneySqFtParam);
+  inputConnection(hoaParam);
+
+
 
 };
 
 document.getElementById("resetButton").addEventListener('click', function(){
-  bedSlider.noUiSlider.set([0, 10]);
-  bathSlider.noUiSlider.set([0, 10]);
-	priceSlider.noUiSlider.set([0, 10000000]);
-	sqftSlider.noUiSlider.set([0, 3000]);
-	yearSlider.noUiSlider.set([1900, 2018]);
-	moneySqftSlider.noUiSlider.set([0, 1000]);
-	hoaSlider.noUiSlider.set([0, 1000]);
+  bedSlider.noUiSlider.set([minVal.beds, maxVal.beds]);
+  bathSlider.noUiSlider.set([minVal.baths, maxVal.baths]);
+  priceSlider.noUiSlider.set([minVal.price, maxVal.price]);
+  sqftSlider.noUiSlider.set([minVal.sq_ft, maxVal.sq_ft]);
+  yearSlider.noUiSlider.set([minVal.year_built, maxVal.year_built]);
+  moneySqftSlider.noUiSlider.set([minVal.money_per_sq_ft, maxVal.money_per_sq_ft]);
+  hoaSlider.noUiSlider.set([minVal.hoa_per_month, maxVal.hoa_per_month]);
   
 });
 
@@ -640,28 +710,28 @@ function fillLists(maybeList) {
   if (maybeList.constructor === Array) {
     return maybeList
   } else {
-    var a = [maybeList, maybeList];
+    let a = [maybeList, maybeList];
     return a;
   };
 };
 
 function applyFilters() {
 
-  var bedFilterList = bedSlider.noUiSlider.get();
-  var bathFilterList = bathSlider.noUiSlider.get();
-  var priceFilterList = priceSlider.noUiSlider.get();
-  var sqftFilterList = sqftSlider.noUiSlider.get();
-  var yearFilterList = yearSlider.noUiSlider.get();
-  var moneySqftFilterList = moneySqftSlider.noUiSlider.get();
-  var hoaFilterList = hoaSlider.noUiSlider.get();
+  let bedFilterList = bedParam.slider.noUiSlider.get();
+  let bathFilterList = bathParam.slider.noUiSlider.get();
+  let priceFilterList = priceParam.slider.noUiSlider.get();
+  let sqftFilterList = sqftParam.slider.noUiSlider.get();
+  let yearFilterList = yearParam.slider.noUiSlider.get();
+  let moneySqftFilterList = moneySqFtParam.slider.noUiSlider.get();
+  let hoaFilterList = hoaParam.slider.noUiSlider.get();
 
-  var bedFilterList2 = fillLists(bedFilterList)
-  var bathFilterList2 = fillLists(bathFilterList)
-  var priceFilterList2 = fillLists(priceFilterList)
-  var sqftFilterList2 = fillLists(sqftFilterList)
-  var yearFilterList2 = fillLists(yearFilterList)
-  var moneySqftFilterList2 = fillLists(moneySqftFilterList)
-  var hoaFilterList2 = fillLists(hoaFilterList)
+  let bedFilterList2 = fillLists(bedFilterList)
+  let bathFilterList2 = fillLists(bathFilterList)
+  let priceFilterList2 = fillLists(priceFilterList)
+  let sqftFilterList2 = fillLists(sqftFilterList)
+  let yearFilterList2 = fillLists(yearFilterList)
+  let moneySqftFilterList2 = fillLists(moneySqftFilterList)
+  let hoaFilterList2 = fillLists(hoaFilterList)
 
   var filterList = {
     bed: bedFilterList2,
@@ -674,290 +744,366 @@ function applyFilters() {
 
   };
 
+  console.log(filterList)
+
   getData(filterList);
 };
 
 
 
-function bedToSingleEvent() {
+bedToSingleEvent = function(){
   document.getElementById("bedToSingle").style.display = "none";
   document.getElementById("bedToDouble").style.display = "inline-block";
   bedSlider.noUiSlider.destroy();
-  createSingleFilter(bedSlider, 0, 0, 10);
+  createSingleFilter(bedSlider, minVal.beds, minVal.beds, maxVal.beds);
 }
 
-function bedToDoubleEvent() {
+bedToDoubleEvent = function(){
   document.getElementById("bedToSingle").style.display = "inline-block";
   document.getElementById("bedToDouble").style.display = "none";
   bedSlider.noUiSlider.destroy();
-  createDoubleFilter(bedSlider, 0, 10, 0, 10);
+  createDoubleFilter(bedSlider, minVal.beds, maxVal.beds, minVal.beds, maxVal.beds);
 }
 
-function bathToSingleEvent() {
+bathToSingleEvent = function(){
   document.getElementById("bathToSingle").style.display = "none";
   document.getElementById("bathToDouble").style.display = "inline-block";
   bathSlider.noUiSlider.destroy();
-  createSingleFilter(bathSlider, 0, 0, 10);
+  createSingleFilter(bathSlider, minVal.baths, minVal.baths, maxVal.baths);
 }
 
-function bathToDoubleEvent() {
+bathToDoubleEvent = function(){
   document.getElementById("bathToSingle").style.display = "inline-block";
   document.getElementById("bathToDouble").style.display = "none";
   bathSlider.noUiSlider.destroy();
-  createDoubleFilter(bathSlider, 0, 10, 0, 10);
+  createDoubleFilter(bathSlider, minVal.baths, maxVal.baths, minVal.baths, maxVal.baths);
 }
 
-function priceToSingleEvent() {
+priceToSingleEvent = function(){
   document.getElementById("priceToSingle").style.display = "none";
   document.getElementById("priceToDouble").style.display = "inline-block";
   priceSlider.noUiSlider.destroy();
-  createSingleFilter(priceSlider, 0, 0, 10000000);
+  createSingleFilter(priceSlider, minVal.price, minVal.price, maxVal.price);
 }
 
-function priceToDoubleEvent() {
+priceToDoubleEvent = function(){
   document.getElementById("priceToSingle").style.display = "inline-block";
   document.getElementById("priceToDouble").style.display = "none";
   priceSlider.noUiSlider.destroy();
-  createDoubleFilter(priceSlider, 0, 10000000, 0, 10000000);
+  createDoubleFilter(priceSlider, minVal.price, maxVal.price, minVal.price, maxVal.price);
 }
 
-function sqftToSingleEvent() {
+sqftToSingleEvent = function(){
   document.getElementById("sqftToSingle").style.display = "none";
   document.getElementById("sqftToDouble").style.display = "inline-block";
   sqftSlider.noUiSlider.destroy();
-  createSingleFilter(sqftSlider, 0, 0, 3000);
+  createSingleFilter(sqftSlider, minVal.sq_ft, minVal.sq_ft, maxVal.sq_ft);
 }
 
-function sqftToDoubleEvent() {
+sqftToDoubleEvent = function(){
   document.getElementById("sqftToSingle").style.display = "inline-block";
   document.getElementById("sqftToDouble").style.display = "none";
   sqftSlider.noUiSlider.destroy();
-  createDoubleFilter(sqftSlider, 0, 3000, 0, 3000);
+  createDoubleFilter(sqftSlider, minVal.sq_ft, maxVal.sq_ft, minVal.sq_ft, maxVal.sq_ft);
 }
 
-function yearToSingleEvent() {
+yearToSingleEvent = function(){
   document.getElementById("yearToSingle").style.display = "none";
   document.getElementById("yearToDouble").style.display = "inline-block";
   yearSlider.noUiSlider.destroy();
-  createSingleFilter(yearSlider, 0, 1900, 2018);
+  createSingleFilter(yearSlider, minVal.year_built, minVal.year_built, maxVal.year_built);
 }
 
-function yearToDoubleEvent() {
+yearToDoubleEvent = function(){
   document.getElementById("yearToSingle").style.display = "inline-block";
   document.getElementById("yearToDouble").style.display = "none";
   yearSlider.noUiSlider.destroy();
-  createDoubleFilter(yearSlider, 1900, 2018, 1900, 2018);
+  createDoubleFilter(yearSlider, minVal.year_built, maxVal.year_built, minVal.year_built, maxVal.year_built);
 }
 
-function moneySqftToSingleEvent() {
+moneySqftToSingleEvent = function(){
   document.getElementById("moneySqftToSingle").style.display = "none";
   document.getElementById("moneySqftToDouble").style.display = "inline-block";
   moneySqftSlider.noUiSlider.destroy();
-  createSingleFilter(moneySqftSlider, 0, 0, 1000);
+  createSingleFilter(moneySqftSlider, minVal.money_per_sq_ft, minVal.money_per_sq_ft, maxVal.money_per_sq_ft);
 }
 
-function moneySqftToDoubleEvent() {
+moneySqftToDoubleEvent = function(){
   document.getElementById("moneySqftToSingle").style.display = "inline-block";
   document.getElementById("moneySqftToDouble").style.display = "none";
   moneySqftSlider.noUiSlider.destroy();
-  createDoubleFilter(moneySqftSlider, 0, 1000, 0, 1000);
+  createDoubleFilter(moneySqftSlider, minVal.money_per_sq_ft, maxVal.money_per_sq_ft, minVal.money_per_sq_ft, maxVal.money_per_sq_ft);
 }
 
-function hoaToSingleEvent() {
+hoaToSingleEvent = function(){
   document.getElementById("hoaToSingle").style.display = "none";
   document.getElementById("hoaToDouble").style.display = "inline-block";
   hoaSlider.noUiSlider.destroy();
-  createSingleFilter(hoaSlider, 0, 0, 1000);
+  createSingleFilter(hoaSlider, minVal.hoa_per_month, minVal.hoa_per_month, maxVal.hoa_per_month);
 }
 
-function hoaToDoubleEvent() {
+hoaToDoubleEvent = function(){
   document.getElementById("hoaToSingle").style.display = "inline-block";
   document.getElementById("hoaToDouble").style.display = "none";
   hoaSlider.noUiSlider.destroy();
-  createDoubleFilter(hoaSlider, 0, 1000, 0, 1000);
+  createDoubleFilter(hoaSlider, minVal.hoa_per_month, maxVal.hoa_per_month, minVal.hoa_per_month, maxVal.hoa_per_month);
 }
 
 
 
-bedInputConnection()
-bathInputConnection()
-priceInputConnection()
-sqftInputConnection()
-yearInputConnection()
-moneySqftInputConnection()
-hoaInputConnection()
+// bedInputConnection();
+// bathInputConnection();
+// priceInputConnection();
+// sqftInputConnection();
+// yearInputConnection();
+// moneySqftInputConnection();
+// hoaInputConnection();
 
 
 
 
 
-function bedInputConnection() {
-  var bedLowInput = document.getElementById("bedLowInput");
-  var bedHighInput = document.getElementById("bedHighInput");
 
-  bedSlider.noUiSlider.on('update', function( values, handle ) {
 
-    var value = values[handle];
 
-    if ( handle ) {
-      bedHighInput.value = value;
-    } else {
-      bedLowInput.value = Math.round(value);
-    }
-  });
 
-  bedLowInput.addEventListener('change', function(){
-    bedSlider.noUiSlider.set([this.value, null]);
-  });
+// Need 
+// Param.lowInput
+// Param.highInput
+// Param.slider
 
-  bedHighInput.addEventListener('change', function(){
-    bedSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
+// class Param{
+//     constructor(param, slider) {
+//         this.param = param;
+//         this.slider = slider;
+//     };
 
-function bathInputConnection() {
-  var bathLowInput = document.getElementById("bathLowInput");
-  var bathHighInput = document.getElementById("bathHighInput");
+//     get lowInput() {
+//         let tempParam = this.param;
+//         return minVal.tempParam;
+//     };
 
-  bathSlider.noUiSlider.on('update', function( values, handle ) {
+//     get highInput() {
+//         let tempParam = this.param;
+//         return maxVal.tempParam;
+//     }
+// }
 
-    var value = values[handle];
+// const bedParam = new Param(beds, bedSlider);
+// const bathParam = new Param(baths, bathSlider);
+// const priceParam = new Param(price, priceSlider);
+// const sqftParam = new Param(price, sqftSlider);
+// const yearParam = new Param(year_built, yearSlider);
+// const moneySqFtParam = new Param(money_per_sq_ft, moneySqftSlider);
+// const hoaParam = new Param(hoa_per_month, hoaSlider);
 
-    if ( handle ) {
-      bathHighInput.value = value;
-    } else {
-      bathLowInput.value = Math.round(value);
-    }
-  });
 
-  bathLowInput.addEventListener('change', function(){
-    bathSlider.noUiSlider.set([this.value, null]);
-  });
 
-  bathHighInput.addEventListener('change', function(){
-    bathSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
 
-function priceInputConnection() {
-  var priceLowInput = document.getElementById("priceLowInput");
-  var priceHighInput = document.getElementById("priceHighInput");
+function inputConnection(Param) {
+    var highInput = document.getElementById(Param.highInputId);
+    var lowInput = document.getElementById(Param.lowInputId);
+    
+    Param.slider.noUiSlider.on('update', function( values, handle ) {
+  
+      var value = values[handle];
+  
+      if ( handle ) {
+        highInput.value = value;
+      } else {
+        lowInput.value = Math.round(value);
+      }
+    });
+  
+    lowInput.addEventListener('change', function(){
+      Param.slider.noUiSlider.set([this.value, null]);
+    });
+  
+    highInput.addEventListener('change', function(){
+      Param.slider.noUiSlider.set([null, Math.round(this.value)]);
+    });
+  };
 
-  priceSlider.noUiSlider.on('update', function( values, handle ) {
 
-    var value = values[handle];
 
-    if ( handle ) {
-      priceHighInput.value = value;
-    } else {
-      priceLowInput.value = Math.round(value);
-    }
-  });
 
-  priceLowInput.addEventListener('change', function(){
-    priceSlider.noUiSlider.set([this.value, null]);
-  });
 
-  priceHighInput.addEventListener('change', function(){
-    priceSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
 
-function sqftInputConnection() {
-  var sqftLowInput = document.getElementById("sqftLowInput");
-  var sqftHighInput = document.getElementById("sqftHighInput");
 
-  sqftSlider.noUiSlider.on('update', function( values, handle ) {
 
-    var value = values[handle];
 
-    if ( handle ) {
-      sqftHighInput.value = value;
-    } else {
-      sqftLowInput.value = Math.round(value);
-    }
-  });
 
-  sqftLowInput.addEventListener('change', function(){
-    sqftSlider.noUiSlider.set([this.value, null]);
-  });
 
-  sqftHighInput.addEventListener('change', function(){
-    sqftSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
 
-function yearInputConnection() {
-  var yearLowInput = document.getElementById("yearLowInput");
-  var yearHighInput = document.getElementById("yearHighInput");
 
-  yearSlider.noUiSlider.on('update', function( values, handle ) {
 
-    var value = values[handle];
+// function bedInputConnection() {
+//   var bedLowInput = document.getElementById("bedLowInput");
+//   var bedHighInput = document.getElementById("bedHighInput");
 
-    if ( handle ) {
-      yearHighInput.value = value;
-    } else {
-      yearLowInput.value = Math.round(value);
-    }
-  });
+//   bedSlider.noUiSlider.on('update', function( values, handle ) {
 
-  yearLowInput.addEventListener('change', function(){
-    yearSlider.noUiSlider.set([this.value, null]);
-  });
+//     var value = values[handle];
 
-  yearHighInput.addEventListener('change', function(){
-    yearSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
+//     if ( handle ) {
+//       bedHighInput.value = value;
+//     } else {
+//       bedLowInput.value = Math.round(value);
+//     }
+//   });
 
-function moneySqftInputConnection() {
-  var moneySqftLowInput = document.getElementById("moneySqftLowInput");
-  var moneySqftHighInput = document.getElementById("moneySqftHighInput");
+//   bedLowInput.addEventListener('change', function(){
+//     bedSlider.noUiSlider.set([this.value, null]);
+//   });
 
-  moneySqftSlider.noUiSlider.on('update', function( values, handle ) {
+//   bedHighInput.addEventListener('change', function(){
+//     bedSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
 
-    var value = values[handle];
+// function bathInputConnection() {
+//   var bathLowInput = document.getElementById("bathLowInput");
+//   var bathHighInput = document.getElementById("bathHighInput");
 
-    if ( handle ) {
-      moneySqftHighInput.value = value;
-    } else {
-      moneySqftLowInput.value = Math.round(value);
-    }
-  });
+//   bathSlider.noUiSlider.on('update', function( values, handle ) {
 
-  moneySqftLowInput.addEventListener('change', function(){
-    moneySqftSlider.noUiSlider.set([this.value, null]);
-  });
+//     var value = values[handle];
 
-  moneySqftHighInput.addEventListener('change', function(){
-    moneySqftSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
+//     if ( handle ) {
+//       bathHighInput.value = value;
+//     } else {
+//       bathLowInput.value = Math.round(value);
+//     }
+//   });
 
-function hoaInputConnection() {
-  var hoaLowInput = document.getElementById("hoaLowInput");
-  var hoaHighInput = document.getElementById("hoaHighInput");
+//   bathLowInput.addEventListener('change', function(){
+//     bathSlider.noUiSlider.set([this.value, null]);
+//   });
 
-  hoaSlider.noUiSlider.on('update', function( values, handle ) {
+//   bathHighInput.addEventListener('change', function(){
+//     bathSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
 
-    var value = values[handle];
+// function priceInputConnection() {
+//   var priceLowInput = document.getElementById("priceLowInput");
+//   var priceHighInput = document.getElementById("priceHighInput");
 
-    if ( handle ) {
-      hoaHighInput.value = value;
-    } else {
-      hoaLowInput.value = Math.round(value);
-    }
-  });
+//   priceSlider.noUiSlider.on('update', function( values, handle ) {
 
-  hoaLowInput.addEventListener('change', function(){
-    hoaSlider.noUiSlider.set([this.value, null]);
-  });
+//     var value = values[handle];
 
-  hoaHighInput.addEventListener('change', function(){
-    hoaSlider.noUiSlider.set([null, Math.round(this.value)]);
-  });
-};
+//     if ( handle ) {
+//       priceHighInput.value = value;
+//     } else {
+//       priceLowInput.value = Math.round(value);
+//     }
+//   });
+
+//   priceLowInput.addEventListener('change', function(){
+//     priceSlider.noUiSlider.set([this.value, null]);
+//   });
+
+//   priceHighInput.addEventListener('change', function(){
+//     priceSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
+
+// function sqftInputConnection() {
+//   var sqftLowInput = document.getElementById("sqftLowInput");
+//   var sqftHighInput = document.getElementById("sqftHighInput");
+
+//   sqftSlider.noUiSlider.on('update', function( values, handle ) {
+
+//     var value = values[handle];
+
+//     if ( handle ) {
+//       sqftHighInput.value = value;
+//     } else {
+//       sqftLowInput.value = Math.round(value);
+//     }
+//   });
+
+//   sqftLowInput.addEventListener('change', function(){
+//     sqftSlider.noUiSlider.set([this.value, null]);
+//   });
+
+//   sqftHighInput.addEventListener('change', function(){
+//     sqftSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
+
+// function yearInputConnection() {
+//   var yearLowInput = document.getElementById("yearLowInput");
+//   var yearHighInput = document.getElementById("yearHighInput");
+
+//   yearSlider.noUiSlider.on('update', function( values, handle ) {
+
+//     var value = values[handle];
+
+//     if ( handle ) {
+//       yearHighInput.value = value;
+//     } else {
+//       yearLowInput.value = Math.round(value);
+//     }
+//   });
+
+//   yearLowInput.addEventListener('change', function(){
+//     yearSlider.noUiSlider.set([this.value, null]);
+//   });
+
+//   yearHighInput.addEventListener('change', function(){
+//     yearSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
+
+// function moneySqftInputConnection() {
+//   var moneySqftLowInput = document.getElementById("moneySqftLowInput");
+//   var moneySqftHighInput = document.getElementById("moneySqftHighInput");
+
+//   moneySqftSlider.noUiSlider.on('update', function( values, handle ) {
+
+//     var value = values[handle];
+
+//     if ( handle ) {
+//       moneySqftHighInput.value = value;
+//     } else {
+//       moneySqftLowInput.value = Math.round(value);
+//     }
+//   });
+
+//   moneySqftLowInput.addEventListener('change', function(){
+//     moneySqftSlider.noUiSlider.set([this.value, null]);
+//   });
+
+//   moneySqftHighInput.addEventListener('change', function(){
+//     moneySqftSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
+
+// function hoaInputConnection() {
+//   var hoaLowInput = document.getElementById("hoaLowInput");
+//   var hoaHighInput = document.getElementById("hoaHighInput");
+
+//   hoaSlider.noUiSlider.on('update', function( values, handle ) {
+
+//     var value = values[handle];
+
+//     if ( handle ) {
+//       hoaHighInput.value = value;
+//     } else {
+//       hoaLowInput.value = Math.round(value);
+//     }
+//   });
+
+//   hoaLowInput.addEventListener('change', function(){
+//     hoaSlider.noUiSlider.set([this.value, null]);
+//   });
+
+//   hoaHighInput.addEventListener('change', function(){
+//     hoaSlider.noUiSlider.set([null, Math.round(this.value)]);
+//   });
+// };
 
 function initMap() {
   // The location of Uluru
@@ -972,31 +1118,4 @@ function initMap() {
 
 
 
-
-
-
-
-
-
-
-
-
-// // Create a map object
-// var myMap = L.map("map", {
-//     center: [37.09, -95.71],
-//     zoom: 5
-//   });
-  
-//   // Add a tile layer
-//   L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
-//     "access_token=pk.eyJ1Ijoia2pnMzEwIiwiYSI6ImNpdGRjbWhxdjAwNG0yb3A5b21jOXluZTUifQ." +
-//     "T6YbdDixkOBWH_k9GbS8JQ"
-//   ).addTo(myMap);
-
-//   for (var i = 0; i < cities.length; i++) {
-//     var city = cities[i];
-//     L.marker(city.location)
-//       .bindPopup("<h1>" + city.name + "</h1> <hr> <h3>Population " + city.population + "</h3>")
-//       .addTo(myMap);
-//   }
 
