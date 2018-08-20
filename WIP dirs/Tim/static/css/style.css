@@ -1,0 +1,419 @@
+html { height: 100% }
+body { 
+    height: 100%; 
+    margin: 0px; 
+    padding: 0px; 
+    overflow: hidden;
+}
+
+a:hover { 
+    text-decoration: none;
+    color: black;
+}
+
+.list-group {
+    height: 89vh;
+    margin-bottom: 0px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.list-group-header {
+    max-height: 500px;
+    margin-bottom: 10px;
+    overflow:hidden;
+    list-style-type: none;
+    padding-left: 6px;
+}
+
+.list-group-item {
+    padding: 0px;
+    /* height: 28.8px; */
+}
+
+.panel-body {
+    padding: 0px;
+}
+
+.scroll-list {
+    color:black;
+    font-size:12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    padding:6px;
+    display: block;
+    height: 100%;
+    text-decoration: none;
+}
+
+.scroll-list-header {
+    color: black;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    padding: 0px;
+}
+
+.scroll-list-left {
+    padding-left: 20px;
+}
+
+.bedBath {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.mySliderContainer {
+    height: 10vh;
+    padding: 0px;
+}
+
+.mySliderClass {
+    height: 5vh;
+}
+
+.noUi-horizontal {
+    height: 2vh;
+    width: 20vw;
+}
+
+.input-number {
+	padding: 7px;
+	margin: 15px 5px 5px;
+    width: 8vw;
+    height: 3vh;
+}
+
+.panel-primary {
+    width: 500px;
+}
+
+.list-area {
+    margin: 0px;
+}
+
+.panel > .panel-heading {
+    background-image: none;
+    /* background-color: rgb(6, 193, 250); */
+    color: black;
+}
+
+.btn-info {
+    background-image: none;
+    /* background-color: rgb(6, 193, 250); */
+    color: white;   
+}
+
+.bigNavButtons {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.mini-panel-btn {
+    height: 25vh;
+    width: 80px;
+    transition: 0.5s;
+}
+
+#mini-panel {
+    height: 100vh;
+    width: 80px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    display: none;
+    margin: 0px;
+    transition: 0.5s;
+}
+
+#container {
+    height: 50%;
+    width: 50%;
+    position: absolute;
+    right:0;
+    top:0;
+    
+}
+#map {
+    height:100%;
+    width: calc(100% - 498px);
+    position:absolute;
+    right: 0;
+    top:0;
+}
+
+#resetButton {
+    border-radius: 10px;
+    height: 10vh;
+    width: 30vw;
+    margin-bottom: 5px;
+}
+
+#filterButton {
+    border-radius: 10px;
+    height: 10vh;
+    width: 30vw;
+
+}
+
+#hideListButton {
+    border-radius: 10px;
+    display: inline-block;
+    background-color: white;
+}
+
+#hideListButton:hover {
+    background-color: rgba(255, 255, 255, 0.856);
+}
+
+#hideListButton:active {
+    background-color: rgba(255, 255, 255, 0.486);
+}
+
+#resetFiltersButton {
+    border-radius: 10px;
+    display: inline-block;
+    background-color: white;
+}
+
+#resetFiltersButton:hover {
+    background-color: rgba(255, 255, 255, 0.856);
+}
+
+#resetFiltersButton:active {
+    background-color: rgba(255, 255, 255, 0.486);
+}
+
+#resetFiltersButton2 {
+    border-radius: 0px;
+    display: inline-block;
+    /* background-color: white; */
+}
+
+#resetFiltersButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#resetFiltersButton2:active {
+    /* background-color: rgba(255, 255, 255, 0.486); */
+}
+
+#showFiltersButton {
+    border-radius: 10px;
+    display: inline-block;
+    background-color: white;
+}
+
+#showFiltersButton:hover {
+    background-color: rgba(255, 255, 255, 0.856);
+}
+
+#hideFiltersButton {
+    border-radius: 10px;
+    display: none;
+}
+
+#showFiltersButton2 {
+    border-radius: 0px;
+    display: inline-block;
+    /* background-color: white; */
+}
+
+#showFiltersButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#hideFiltersButton2 {
+    border-radius: 0px;
+    display: none;
+    background-color: rgb(17, 50, 141);
+}
+
+#hideFiltersButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#showGraphsButton {
+    border-radius: 10px;
+    display: inline-block;
+    background-color: white;
+}
+
+#showGraphsButton:hover {
+    background-color: rgba(255, 255, 255, 0.856);
+}
+
+#hideGraphsButton {
+    border-radius: 10px;
+    display: none;
+}
+
+#showGraphsButton2 {
+    border-radius: 0px;
+    display: inline-block;
+    /* background-color: white; */
+}
+
+#showGraphsButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#hideGraphsButton2 {
+    border-radius: 0px;
+    display: none;
+    background-color: rgb(17, 50, 141);
+}
+
+#hideGraphsButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#showListButton2 {
+    border-radius: 0px;
+}
+
+#showListButton2:hover {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+#bedToSingle {
+    display: null;
+}
+
+#bathToSingle{
+    display: null;
+}
+
+#priceToSingle{
+    display: null;
+}
+
+#sqftToSingle{
+    display: null;
+}
+
+#yearToSingle{
+    display: null;
+}
+
+#moneySqftToSingle{
+    display: null;
+}
+
+#hoaToSingle{
+    display: null;
+}
+
+#bedToDouble{
+    display: none;
+}
+
+#bathToDouble{
+    display: none;
+}
+
+#priceToDouble{
+    display: none;
+}
+
+#sqftToDouble{
+    display: none;
+}
+
+#yearToDouble{
+    display: none;
+}
+
+#moneySqftToDouble{
+    display: none;
+}
+
+#hoaToDouble{
+    display: none;
+}
+
+#result_panel {
+    padding: 0px;
+    z-index: 2;
+    left: 0;
+    top: 0;
+}
+
+#mySidenav {
+    /* padding-top: 30px; */
+}
+
+/* COPIED FROM W3SCHOOLS */
+
+/* The side navigation menu */
+.sidenav {
+    width: 100%; /* 100% Full-height */
+    height: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1200; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: rgb(231, 237, 245); /* Black*/
+    overflow: hidden; /* Disable scroll */
+    padding-left: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    /* padding: 8px 8px 8px 32px; */
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181a6;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav .deactbtn:hover {
+    color: red;
+}
+
+.sidenav .actbtn:hover {
+    color: green;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .deactbtn {
+    font-size: 36px;
+    padding: 0px;
+    max-height: 5vh;
+    top: 100px;
+}
+
+.sidenav .actbtn {
+    font-size: 36px;
+    padding: 0px;
+    max-height: 5vh;
+    top: 100px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-top 0.5s;
+    padding: 0px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+
+/* NoUi */
+.noUi-connect {
+    color: rgb(6, 193, 250);
+	background: rgb(6, 193, 250);
+    
+}
