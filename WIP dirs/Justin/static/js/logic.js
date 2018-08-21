@@ -4,7 +4,7 @@ var propTypeChart = dc.rowChart("#propType");
 var zipTypeChart = dc.rowChart("#zipType");
 var visCount = dc.dataCount(".dc-data-count");
 var visTable = dc.dataTable(".dc-data-count");
-
+ 
 var chart = dc.scatterPlot("#test");
 
 var myMap = L.map('map');
@@ -62,7 +62,7 @@ function createList (jsonUrl) {
           return d["property_type"];
       });
       var zipTypeDim = ndx.dimension(function (d){
-          return d["zip_"];
+          return d["location"];
       });
       var idTypeDim = ndx.dimension(function (d){
           return d["id"];
@@ -73,21 +73,26 @@ function createList (jsonUrl) {
       });
       var allDim = ndx.dimension(function(d) {return d;});
 
+      
       var propTypeGroup = propTypeDim.group();
       var zipTypeGroup = zipTypeDim.group();
       var idTypeGroup = idTypeDim.group();
+      // scatter
       var scatterGroup = scatterDim.group();
 
+
+
       propTypeChart
-          .width(600)
-          .height(325)
+          .width(500)
+          .height(250)
           .dimension(propTypeDim)
           .group(propTypeGroup)
           .elasticX(true);
+          
 
       zipTypeChart
-          .width(600)
-          .height(325)
+          .width(500)
+          .height(250)
           .dimension(zipTypeDim)
           .group(zipTypeGroup)
           .elasticX(true)
@@ -96,23 +101,27 @@ function createList (jsonUrl) {
           });
 
       chart
-          .width(600)
-          .height(350)
+          .width(550)
+          .height(275)
           .dimension(scatterDim)
           .group(scatterGroup)
-          .symbolSize(10)
-          .elasticX(true)
-          .elasticY(true)
+          .symbolSize(9)
+          // .elasticX(true)
           .yAxisPadding(500)
           .xAxisPadding(100)
           .yAxisLabel(["Price"])
           .xAxisLabel("Square Feet")
           .margins({top: 10, right: 20, bottom: 50, left: 80})
+          // .renderlet(function (chart) {
+          //     chart.selectAll("g.x text")
+          //       .attr('dx', '-30')
+          //       .attr('transform', "rotate(-90)");
+          // })
+          // .xAxis([0, 1000, 2000, 3000, 4000, 5000])
           .x(d3.scale.linear().domain([25, 6508]))
-          // .y(d3.scale.linear().domain([0, 7000000]))
           .yAxis().ticks(10).tickFormat(function (v) {
       return "$" + v;});
-          
+          // .y(d3.scale.linear().domain([0, 100]));
 
       visCount
           .dimension(ndx)
@@ -174,25 +183,26 @@ function createList (jsonUrl) {
               }
               ])
               .on('renderlet', function (table) { // update map with locations to match filtered data
-              table.select('tr.dc-table-group').remove();
-              mapMarkers.clearLayers();
-              _.each(allDim.top(Infinity), function (d) {
-                  var addy = d.address;
-                  var marker = L.marker([d.lat, d.lon]);
-                  marker.bindPopup("<u/>" +
-                  "<li>" + "Sales Price: " + "$" + d.price +  "</li>" +
-                  "<li>" + "Address: " + addy + ", " + d.city + " " + d.state + "  " + "</li>" +
-                  "<li>" + "Neighborhood: " + d.location +  "</li>" +
-                  "<li>" + "Property Type: " + d.property_type +  "</li>" +
-                  "<li>" + "Days on Market: " + d.days_on_market +  "</li>" +
-                  "<li>" + "Year Built: " + d.year_built +  "</li>" +
-                  "<li>" + "<a href=" + d.url + ">Visit Redfin Listing for more information!" + "</a>" + "</li>" 
-                );
-                  mapMarkers.addLayer(marker);
-              });
-              myMap.addLayer(mapMarkers);
-              myMap.fitBounds(mapMarkers.getBounds());
-          });
+                table.select('tr.dc-table-group').remove();
+                mapMarkers.clearLayers();
+                _.each(allDim.top(Infinity), function (d) {
+                    var addy = d.address;
+                    var marker = L.marker([d.lat, d.lon]);
+                    marker.bindPopup("<u/>" +
+                    "<li>" + "Sales Price: " + "$" + d.price +  "</li>" +
+                    "<li>" + "Sq Feet: " + d.sq_ft +  "</li>" +
+                    "<li>" + "Address: " + addy + ", " + d.city + " " + d.state + "  " + "</li>" +
+                    "<li>" + "Neighborhood: " + d.location +  "</li>" +
+                    "<li>" + "Property Type: " + d.property_type +  "</li>" +
+                    "<li>" + "Days on Market: " + d.days_on_market +  "</li>" +
+                    "<li>" + "Year Built: " + d.year_built +  "</li>" +
+                    "<li>" + "<a href=" + d.url + ">Visit Redfin Listing for more information!" + "</a>" + "</li>" 
+                  );
+                    mapMarkers.addLayer(marker);
+                });
+                myMap.addLayer(mapMarkers);
+                myMap.fitBounds(mapMarkers.getBounds());
+            });
           // Justin 2 of 2 END
               
 
@@ -277,8 +287,6 @@ document.body.onload = function() {
 
 
 function openList() {
-  // closeNav()
-  // closeGraphNav()
 
   document.getElementById("mini-panel").style.display = "none";
   document.getElementById("result_panel").style.display = "block";
@@ -289,8 +297,6 @@ function openList() {
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
 function closeList() {
-  // closeNav()
-  // closeGraphNav()
 
   document.getElementById("mini-panel").style.display = "block";
   document.getElementById("result_panel").style.display = "none";

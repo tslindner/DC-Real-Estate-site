@@ -5,6 +5,8 @@ from flask_marshmallow import Marshmallow
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 
+from Modules.google_places import nearest
+
 
 import json
 import numpy as np
@@ -61,6 +63,8 @@ class Listing(db.Model):
     lon = db.Column(db.Float)
 
     def serialize(self):
+
+        #  TODO camelcase return keys
         
         return {
             "id": self.id,
@@ -122,6 +126,11 @@ def home():
         
     return render_template("index.html")
 
+@app.route("/focus", methods=["GET", "POST"])
+def focus():
+
+    return render_template("focus.html")
+
 @app.route("/data")
 def data():
 
@@ -132,7 +141,7 @@ def data():
     # collection.drop()
 
     real_estate_data = pd.read_csv("input_data/real_estate.csv")
-    real_estate_data.fillna(value="N/A", inplace=True)
+    real_estate_data.fillna(value=0, inplace=True)
     real_estate_data = real_estate_data.rename(index=str, columns={"SALE TYPE": "sale_type",
                                                                     "SOLD DATE": "sold_date", 
                                                                     "URL (SEE http://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)": "url",
@@ -160,6 +169,32 @@ def data():
                                                                     "INTERESTED": "interested",
                                                                     "LATITUDE": "lat",
                                                                     "LONGITUDE": "lon"})
+
+
+
+    cols = real_estate_data.columns
+    my_dict = dict()
+
+    for i in cols:
+        if f"{i}" not in my_dict.keys():
+            my_dict[f"{i}"] = []
+            
+        try:
+            if type(real_estate_data[i].max()) != str and type(real_estate_data[i].min()) != str:
+
+                my_dict[f"{i}"].append(real_estate_data[i].min())
+                my_dict[f"{i}"].append(real_estate_data[i].max())
+            else: 
+
+                my_dict[f"{i}"].append(0)
+                my_dict[f"{i}"].append(0)
+        except:
+            my_dict[f"{i}"].append(0)
+            my_dict[f"{i}"].append(0)
+            
+    min_max = pd.DataFrame(my_dict).fillna(0)
+
+    real_estate_data = pd.concat([min_max, real_estate_data], ignore_index=True)
 
     real_estate_data = real_estate_data.to_dict(orient="records")
 
@@ -288,9 +323,25 @@ def zoom():
 
     query_result = query_result.all()
 
+    result_many = listings_schema.dump(query_result)
 
-    result = listings_schema.dump(query_result)
-    return jsonify(result.data)
+
+    if len(result_many.data) == 1:
+
+        print(result_many.data)
+        print(type(result_many.data))
+
+        
+        listing = result_many.data[0]
+
+        result_one = nearest(listing)
+
+        print(result_one)
+
+        return render_template("focus.html", listing=result_one)
+
+    else:
+        return jsonify(result_many.data)
 
 
 

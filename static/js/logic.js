@@ -62,7 +62,7 @@ function createList (jsonUrl) {
           return d["property_type"];
       });
       var zipTypeDim = ndx.dimension(function (d){
-          return d["zip_"];
+          return d["location"];
       });
       var idTypeDim = ndx.dimension(function (d){
           return d["id"];
