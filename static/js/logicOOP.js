@@ -598,7 +598,6 @@ function inputConnection(Param) {
   };
 
 
-
 // bedSlider.noUiSlider.on('change', applyFilters());
 // bathSlider.noUiSlider.on('change', applyFilters());
 // priceSlider.noUiSlider.on('change', applyFilters());

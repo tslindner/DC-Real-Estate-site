@@ -5,6 +5,8 @@ from flask_marshmallow import Marshmallow
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 
+from Modules.google_places import nearest
+
 
 import json
 import numpy as np
@@ -123,6 +125,11 @@ def setup():
 def home():
         
     return render_template("index.html")
+
+@app.route("/focus", methods=["GET", "POST"])
+def focus():
+
+    return render_template("focus.html")
 
 @app.route("/data")
 def data():
@@ -316,9 +323,25 @@ def zoom():
 
     query_result = query_result.all()
 
+    result_many = listings_schema.dump(query_result)
 
-    result = listings_schema.dump(query_result)
-    return jsonify(result.data)
+
+    if len(result_many.data) == 1:
+
+        print(result_many.data)
+        print(type(result_many.data))
+
+        
+        listing = result_many.data[0]
+
+        result_one = nearest(listing)
+
+        print(result_one)
+
+        return render_template("focus.html", listing=result_one)
+
+    else:
+        return jsonify(result_many.data)
 
 
 
