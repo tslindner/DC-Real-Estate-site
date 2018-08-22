@@ -8,7 +8,8 @@
     <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/nouislider.min.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/focus.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/leaflet_awesome_markers.css') }}">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
@@ -23,10 +24,18 @@
     <script src="{{ url_for('static', filename='js/crossfilter.js') }}"></script>
     <script src="{{ url_for('static', filename='js/d3.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dc.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/lib/leaflet_awesome_markers.js') }}"></script>
     <script type="text/javascript">
         var listing = {{ listing|tojson|safe }}
-        var nearestData = {{ nearest_data|tojson|safe }}
-        console.log(nearestData);
+        var nearestRestaurant = {{ nearest_restaurant|tojson|safe }}
+        var nearestGroceries = {{ nearest_groceries|tojson|safe }}
+        var nearestCoffee = {{ nearest_coffee|tojson|safe }}
+        var nearestEntertainment = {{ nearest_entertainment|tojson|safe }}
+        var nearestBar = {{ nearest_bar|tojson|safe }}
+        var redIcon = 'static/map-marker-2-xxl.png'
+
+        console.log(nearestEntertainment);
     </script>
 
 
@@ -38,10 +47,32 @@
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
     <div id="main">
         <div>
-            <img src="{{ url_for('static', filename='if_i_had_one.png') }}" alt="Image of the listed home" style="height:40vh;"/>
+            <!-- <img src="{{ url_for('static', filename='if_i_had_one.png') }}" alt="Image of the listed home" style="height:40vh;"/> -->
+            <button id='homeButton' class='btn-primary' onclick="window.location.href='/'"><h1>Home</h1></button>
             <h1 id='address'></h1>
-            <h3 id='listingInfo'></h3>
+            <h3>
+                <div id='location'></div>
+                <div id='price'></div>
+                <div id='propertyType'></div>
+                <div id='beds'></div>
+                <div id='baths'></div>
+                <div id='sqFt'></div>
+                <div id='moneySqFt'></div>
+                <div id='yearBuilt'></div>
+                <div id='lotSize'></div>
+
+            </h3>
         </div>
+
+    </div>
+
+    <div id='myButtonDiv'>
+        <button id='restaurantButton' class='myButtons btn-primary'>Restaurants</button>
+        <button id='groceriesButton' class='myButtons btn-primary'>Groceries</button>
+        <button id='coffeeButton' class='myButtons btn-primary'>Coffee</button>
+        <br/>
+        <button id='entertainmentButton' class='myButtons btn-primary'>Entertainment</button>
+        <button id='barButton' class='myButtons btn-primary'>Bars</button>
 
     </div>
 

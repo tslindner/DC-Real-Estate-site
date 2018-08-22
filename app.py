@@ -321,13 +321,19 @@ def zoom():
     result = listings_schema.dump(query_result)
 
     if len(result.data) == 1:
-        listing = result.data
+        listing = result.data[0]
         print(type(listing))
 
-        nearest_data = nearest_establishments(listing)
-        print(type(nearest_data))
+        nearest_restaurant, nearest_groceries, nearest_coffee, nearest_entertainment, nearest_bar = nearest_establishments(listing)
+        print(type(nearest_restaurant))
 
-        return render_template("focus.html", listing=listing, nearest_data=nearest_data)
+        return render_template("focus.html", 
+            listing=listing, 
+            nearest_restaurant=nearest_restaurant, 
+            nearest_groceries=nearest_groceries,
+            nearest_coffee=nearest_coffee,
+            nearest_entertainment=nearest_entertainment,
+            nearest_bar=nearest_bar,)
 
     else:
         return jsonify(result.data)

@@ -41,7 +41,7 @@ class Param{
     };
 
     
-}
+};
 
 
 const bedParam = new Param("beds", bedSlider, 'bedLowInput', 'bedHighInput', 'bedToSingle', 'bedToDouble');
