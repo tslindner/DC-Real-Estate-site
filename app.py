@@ -5,12 +5,12 @@ from flask_marshmallow import Marshmallow
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 
-from Modules.google_places import nearest
-
+from Modules.google_places import nearest_establishments
 
 import json
 import numpy as np
 import pandas as pd
+
 
 # Old Mongo:
 # import pymongo
@@ -60,7 +60,7 @@ class Listing(db.Model):
     favorite = db.Column(db.String(64))
     interested = db.Column(db.String(64))
     lat = db.Column(db.Float)
-    lon = db.Column(db.Float)
+    lng = db.Column(db.Float)
 
     def serialize(self):
 
@@ -94,7 +94,7 @@ class Listing(db.Model):
             "favorite": self.favorite,
             "interested": self.interested,
             "lat": self.lat,
-            "lon": self.lon
+            "lng": self.lng
             }
 
 
@@ -108,7 +108,7 @@ class listingSchema(ma.Schema):
         "city","state","zip_","price","beds","baths","location","sq_ft","lot_size",
         "year_built","days_on_market","money_per_sq_ft","hoa_per_month","status",
         "next_open_house_start","next_open_house_end","source","mls","favorite",
-        "interested","lat","lon")
+        "interested","lat","lng")
 
 listing_schema = listingSchema()
 listings_schema = listingSchema(many=True)
@@ -125,11 +125,6 @@ def setup():
 def home():
         
     return render_template("index.html")
-
-@app.route("/focus", methods=["GET", "POST"])
-def focus():
-
-    return render_template("focus.html")
 
 @app.route("/data")
 def data():
@@ -168,7 +163,7 @@ def data():
                                                                     "FAVORITE": "favorite",
                                                                     "INTERESTED": "interested",
                                                                     "LATITUDE": "lat",
-                                                                    "LONGITUDE": "lon"})
+                                                                    "LONGITUDE": "lng"})
 
 
 
@@ -213,7 +208,7 @@ def data():
 @app.route("/search", methods=["GET", "POST"])
 def zoom():
     latitude = request.args.get("lat") 
-    longitude = request.args.get("lon")
+    longitude = request.args.get("lng")
     ident = request.args.get("id")
     high_beds = request.args.get("high_beds")
     low_beds = request.args.get("low_beds")
@@ -242,7 +237,7 @@ def zoom():
     query_result = db.session.query(Listing)
 
     if latitude and longitude:
-        query_result = query_result.filter_by(lat=latitude).filter_by(lon=longitude)
+        query_result = query_result.filter_by(lat=latitude).filter_by(lng=longitude)
 
     if ident:
         query_result = query_result.filter_by(id=ident)
@@ -323,25 +318,19 @@ def zoom():
 
     query_result = query_result.all()
 
-    result_many = listings_schema.dump(query_result)
+    result = listings_schema.dump(query_result)
 
+    if len(result.data) == 1:
+        listing = result.data
+        print(type(listing))
 
-    if len(result_many.data) == 1:
+        nearest_data = nearest_establishments(listing)
+        print(type(nearest_data))
 
-        print(result_many.data)
-        print(type(result_many.data))
-
-        
-        listing = result_many.data[0]
-
-        result_one = nearest(listing)
-
-        print(result_one)
-
-        return render_template("focus.html", listing=result_one)
+        return render_template("focus.html", listing=listing, nearest_data=nearest_data)
 
     else:
-        return jsonify(result_many.data)
+        return jsonify(result.data)
 
 
 

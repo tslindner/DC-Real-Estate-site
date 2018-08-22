@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
+    <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/nouislider.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
@@ -23,7 +23,11 @@
     <script src="{{ url_for('static', filename='js/crossfilter.js') }}"></script>
     <script src="{{ url_for('static', filename='js/d3.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dc.js') }}"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        var listing = {{ listing|tojson|safe }}
+        var nearestData = {{ nearest_data|tojson|safe }}
+        console.log(nearestData);
+    </script>
 
 
 
@@ -31,193 +35,17 @@
 
 <body>
 
-    <div id="mySidenav" class="sidenav container">
-        <div class="row" style="height:30px;"></div>
-        
-        <div class="row">
-            <div class="col-md-1">
-                Beds:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateBedSlider" onclick="activateBed()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateBedSlider" onclick="deactivateBed()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="bedSlider"></div> 
-                <button type="button" id="bedToSingle">Single</button> 
-                <button type="button" id="bedToDouble">Double</button>
-                <input type="number" id="bedLowInput" class="input-number">
-                <input type="number" id="bedHighInput" class="input-number">
-            </div>
-
-            <div class="col-md-1">
-                Baths:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateBathSlider" onclick="activateBath()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateBathSlider" onclick="deactivateBath()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="bathSlider" class="mySliderClass"></div> 
-                <button type="button" id="bathToSingle">Single</button> 
-                <button type="button" id="bathToDouble">Double</button>
-                <input type="number" id="bathLowInput" class="input-number">
-                <input type="number" id="bathHighInput" class="input-number">
-            </div>
-
-            <div class="col-md-1">
-                    Price:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activatePriceSlider" onclick="activatePrice()" title="Activate slider">+</a> -->
-                    <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivatePriceSlider" onclick="deactivatePrice()" title="Deactivate slider">&times;</a> -->
-                </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="priceSlider" class="mySliderClass"></div> 
-                <button type="button" id="priceToSingle">Single</button> 
-                <button type="button" id="priceToDouble">Double</button>
-                <input type="number" id="priceLowInput" class="input-number">
-                <input type="number" id="priceHighInput" class="input-number">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div>
-                    <button type="button" id="resetButton" class="btn-primary"><h1 class="bigNavButtons">Reset filters</h1></button>
-                </div>
-            </div>
-            <div class="col-md-1">
-                Sq. Ft.:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateSqftSlider" onclick="activateSqft()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateSqftSlider" onclick="deactivateSqft()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="sqftSlider" class="mySliderClass"></div> 
-                <button type="button" id="sqftToSingle">Single</button> 
-                <button type="button" id="sqftToDouble">Double</button>
-                <input type="number" id="sqftLowInput" class="input-number">
-                <input type="number" id="sqftHighInput" class="input-number">
-            </div>
-        
-            <div class="col-md-1">
-                Year Built:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateYearSlider" onclick="activateYear()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateYearSlider" onclick="deactivateYear()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="yearSlider" class="mySliderClass"></div> 
-                <button type="button" id="yearToSingle">Single</button> 
-                <button type="button" id="yearToDouble">Double</button>
-                <input type="number" id="yearLowInput" class="input-number">
-                <input type="number" id="yearHighInput" class="input-number">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div>
-                    <button type="button" id="filterButton" class="btn-primary" onclick="applyFilters()"><h1 class="bigNavButtons">Apply filters</h1></button>
-                </div>
-            </div>
-            <div class="col-md-1">
-                $/Sq. Ft.:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateMoneySqftSlider" onclick="activateMoneySqft()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateMoneySqftSlider" onclick="deactivateMoneySqft()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="moneySqftSlider" class="mySliderClass"></div> 
-                <button type="button" id="moneySqftToSingle">Single</button> 
-                <button type="button" id="moneySqftToDouble">Double</button>
-                <input type="number" id="moneySqftLowInput" class="input-number">
-                <input type="number" id="moneySqftHighInput" class="input-number">
-            </div>
-
-            <div class="col-md-1">
-                HOA per month:
-                <!-- <a href="javascript:void(0)" class="actbtn" id="activateHoaSlider" onclick="activateHoa()" title="Activate slider">+</a> -->
-                <!-- <a href="javascript:void(0)" class="deactbtn" id="deactivateHoaSlider" onclick="deactivateHoa()" title="Deactivate slider">&times;</a> -->
-            </div>
-            <div class="mySliderContainer col-md-3">
-                <div id="hoaSlider" class="mySliderClass"></div> 
-                <button type="button" id="hoaToSingle">Single</button> 
-                <button type="button" id="hoaToDouble">Double</button>
-                <input type="number" id="hoaLowInput" class="input-number">
-                <input type="number" id="hoaHighInput" class="input-number">
-            </div>
-        </div>
-    </div>
-
-    <div id="graphNav" class="sidenav container">
-        <!-- <h1>PROJECT DJFLSAFD</h1> -->
-        <div class="row">
-            <div id="propType" class="col-md-4">
-                <strong>Property Type</strong>
-                <span class="reset" style="display: none;">Selected: <span class="filter"></span></span>
-                <a class="reset" href="javascript:propTypeChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
-
-            <div id="zipType" class="col-md-4">
-                <strong>Zip Code (10)</strong>
-                <span class="reset" style="display: none;">Selected: <span class="filter"></span></span>
-                <a class="reset" href="javascript:zipTypeChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-
-                <div class="clearfix"></div>
-            </div>
-
-            
-            <div id="test" class="col-md-4">
-                <strong>Price vs Sq Feet</strong>
-                <!-- <span class="reset" style="display: none;">Selected: <span class="filter"></span></span>
-                <a class="reset" href="javascript:propTypeChart.filterAll();dc.redrawAll();" style="display: none;">reset</a> -->
-
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div> 
-        
-        <!-- Use any element to open the sidenav -->
-    
-        
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
     <div id="main">
-        <div id="mini-panel">
-            <button type="button" onclick="openNav()" id="showFiltersButton2" class="btn bg-primary mini-panel-btn">Show <br> filters</button>
-            <button type="button" onclick="closeNav()" id="hideFiltersButton2" class="btn bg-primary mini-panel-btn">Hide <br> filters</button>
-            <button type="button" onclick="openGraphNav()" id="showGraphsButton2" class="btn bg-primary mini-panel-btn">Show <br> graphs</button>
-            <button type="button" onclick="closeGraphNav()" id="hideGraphsButton2" class="btn bg-primary mini-panel-btn">Hide <br> graphs</button>
-            <button type="button" onclick="clearFilters()" id="resetFiltersButton2" class="btn bg-primary mini-panel-btn">Remove <br> filters</button>
-            <button type="button" onclick="openList()" id="showListButton2" class="btn bg-primary mini-panel-btn">Show <br> list</button>
+        <div>
+            <img src="{{ url_for('static', filename='if_i_had_one.png') }}" alt="Image of the listed home" style="height:40vh;"/>
+            <h1 id='address'></h1>
+            <h3 id='listingInfo'></h3>
         </div>
 
-        <div class="panel panel-primary list-area" id="result_panel">
-            <div class="panel-heading" id="list-panel-heading">
-                <h3 class="panel-title">
-                    <button type="button" onclick="openNav()" id="showFiltersButton" class="btn">Show filters</button>
-                    <button type="button" onclick="closeNav()" id="hideFiltersButton" class="btn">Hide filters</button>
-                    <button type="button" onclick="openGraphNav()" id="showGraphsButton" class="btn">Show graphs</button>
-                    <button type="button" onclick="closeGraphNav()" id="hideGraphsButton" class="btn">Hide graphs</button>
-                    <button type="button" onclick="clearFilters()" id="resetFiltersButton" class="btn">Remove filters</button>
-                    <button type="button" onclick="closeList()" id="hideListButton" class="btn">Hide list</button>
-
-
-                </h3>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group-header">
-                    <li>
-                        <span class="col-md-1 scroll-list-header scroll-list-left"> </span>
-                        <span class="col-md-3 scroll-list-header"><strong>Address</strong></span>
-                        <span class="col-md-2 scroll-list-header"><strong>Location</strong></span> 
-                        <span class="col-md-2 scroll-list-header"><strong>Price</strong></span>
-                        <span class="col-md-1 scroll-list-header"><strong>Beds</strong></span>
-                        <span class="col-md-1 scroll-list-header"><strong>Baths</strong></span>
-                        <span class="col-md-2 scroll-list-header"><strong>Square feet</strong></span>
-                    </li>
-                </ul>
-                <ul class="list-group">
-
-                </ul>
-            </div>
-        </div>
     </div>
-<div id="map"></div>
+
+    <div id="map"></div>
 <!-- Replace the value of the key parameter with your own API key. -->
 
 
@@ -232,7 +60,7 @@
     
     <script src="{{ url_for('static', filename='js/lib/nouislider.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/wnumb-1.1.0/wNumb.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/logicOOP.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/focusLogic.js') }}"></script>
     
 
 </body>

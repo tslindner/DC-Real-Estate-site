@@ -274,7 +274,7 @@ function createList (jsonUrl) {
                 mapMarkers.clearLayers();
                 _.each(allDim.top(Infinity), function (d) {
                     var addy = d.address;
-                    var marker = L.marker([d.lat, d.lon]);
+                    var marker = L.marker([d.lat, d.lng]);
                     marker.bindPopup("<u/>" +
                     "<li>" + "Sales Price: " + "$" + d.price +  "</li>" +
                     "<li>" + "Sq Feet: " + d.sq_ft +  "</li>" +
