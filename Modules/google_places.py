@@ -9,8 +9,9 @@ def nearest_establishments(listing):
 
     listing = listing[0]
 
+    lat, lng = listing['lat'], listing['lng']
+
     for i in busi_types:
-        lat, lng = listing['lat'], listing['lng']
 
         base_url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         url = '{}location={},{}&keyword={}&rankby=distance&key={}'.format(base_url, lat, lng, i, api_key)
