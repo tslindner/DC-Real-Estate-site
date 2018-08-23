@@ -1,7 +1,7 @@
 import json
 import requests
 
-from config import google_places_api
+from settings import google_places_api
 
 def nearest_establishments(listing):
     nearest_data = dict()
