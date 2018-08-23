@@ -7,6 +7,8 @@ def nearest_establishments(listing):
     nearest_data = dict()
     busi_types = ['restaurant', 'groceries', 'coffee', 'entertainment', 'bar']
 
+    print('google_places_api: ', google_places_api)
+
     for i in busi_types:
         # listing = listing[0]
         lat, lng = listing['lat'], listing['lng']
