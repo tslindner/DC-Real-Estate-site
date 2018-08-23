@@ -16,7 +16,12 @@ def nearest_establishments(listing):
         base_url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         url = '{}location={},{}&keyword={}&rankby=distance&key={}'.format(base_url, lat, lng, i, google_places_api)
 
+        print('{} url: {}'.format(i, url))
+
         response = requests.get(url)
+
+        print(response.json)
+
         data = response.json()
         
         nearest_data[i] = data
